@@ -69,7 +69,8 @@ const fetchData = async () => {
       options.body = requestBody;
     }
 
-    const response = await fetch(`http://127.0.0.1:8000/${selectedPath}`, options);
+    const API_BASE_URL = "https://server-client-trial.onrender.com";
+    const response = await fetch(`${API_BASE_URL}/${selectedPath}`, options);    
     const data = await response.json();
     setResponse(data);
   } catch (error) {
