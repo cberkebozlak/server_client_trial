@@ -69,7 +69,7 @@ const fetchData = async () => {
       options.body = requestBody;
     }
 
-    const API_BASE_URL = "https://server-client-trial.onrender.com";
+    const API_BASE_URL = "https://server-client-trial-1.onrender.com";
     const response = await fetch(`${API_BASE_URL}/${selectedPath}`, options);    
     const data = await response.json();
     setResponse(data);

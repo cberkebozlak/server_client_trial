@@ -45,7 +45,7 @@ class Update(BaseModel):
     operationId: str
     enabled_status: bool
 
-SERVER_BASE_URL = "https://server-client-trial.onrender.com"
+SERVER_BASE_URL = "https://server-client-trial-1.onrender.com"
 
 def fetch_components():
     response = requests.get(f"{SERVER_BASE_URL}/components")
