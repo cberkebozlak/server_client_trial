@@ -1,0 +1,29 @@
+{
+    "items": [
+      {
+        "id": "door",
+        "name": "Door Unit",
+        "href": "{base_uri}/components/door"
+      },
+      {
+        "id": "engine",
+        "name": "Engine Controller Unit",
+        "href": "{base_uri}/components/engine",
+        "faults": [
+          {
+            "code": "123401",
+            "scope": "Default",
+            "display_code": "P123401",
+            "fault_name": "O2 Sensor - Circuit Open",
+            "fault_translation_id": "ENGINE_123401_tid",
+            "severity": 1,
+            "status": {
+              "mask": "08",
+              "aggregatedStatus": "active"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  

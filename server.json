@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "id": "door",
+      "name": "Door Unit",
+      "href": "{base_uri}/components/door"
+    },
+    {
+      "id": "engine",
+      "name": "Engine Controller Unit",
+      "href": "{base_uri}/components/engine",
+      "operation_update": [
+        {
+          "operationId": "ACC_Controller",
+          "enabled_status": true
+        },
+        {
+          "operationId": "Quality_Factor_Controller",
+          "enabled_status": false
+        }
+      ]
+    }
+  ]
+}
