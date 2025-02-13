@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ChevronRight, Folder, FileJson, ChevronDown } from "lucide-react";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://server-client-trial.onrender.com";
+
 const DirectoryUI = () => {
   const [selectedPath, setSelectedPath] = useState("");
   const [response, setResponse] = useState(null);
@@ -9,7 +11,6 @@ const DirectoryUI = () => {
   const [method, setMethod] = useState("GET");
   const [requestBody, setRequestBody] = useState("");
 
-  // Updated directory structure with RESTful API query parameters
   const directory = {
     components: {
       type: "directory",
@@ -46,7 +47,6 @@ const toggleDirectory = (path, e) => {
 
 const handleSelect = (path) => {
   setSelectedPath(path);
-  // Reset request body when selecting a new endpoint
   setRequestBody("");
 };
 
@@ -69,7 +69,6 @@ const fetchData = async () => {
       options.body = requestBody;
     }
 
-    const API_BASE_URL = "https://server-client-trial-1.onrender.com";
     const response = await fetch(`${API_BASE_URL}/${selectedPath}`, options);    
     const data = await response.json();
     setResponse(data);
@@ -125,7 +124,6 @@ const renderDirectory = (structure, path = "", level = 0) => {
 
 return (
   <div className="flex h-screen bg-gray-100">
-    {/* Left Sidebar */}
     <div className="w-64 bg-white border-r overflow-auto">
       <div className="p-4">
         <h2 className="text-lg font-semibold mb-4">Directory</h2>
@@ -133,7 +131,6 @@ return (
       </div>
     </div>
 
-    {/* Main Content */}
     <div className="flex-1 p-6 overflow-auto">
       <div className="bg-white rounded-lg shadow-sm">
         <div className="border-b p-4">
@@ -150,7 +147,7 @@ return (
               <option value="PUT">PUT</option>
             </select>
             <div className="flex-1 bg-gray-100 p-2 rounded">
-              {selectedPath ? `http://127.0.0.1:8000/${selectedPath}` : "Select a folder or endpoint from the directory"}
+              {selectedPath ? `${API_BASE_URL}/${selectedPath}` : "Select a folder or endpoint from the directory"}
             </div>
             <button
               onClick={fetchData}
@@ -161,28 +158,6 @@ return (
             >
               {loading ? "Loading..." : <>Send <ChevronRight className="ml-2 w-4 h-4" /></>}
             </button>
-          </div>
-
-          {/* Request Body Section */}
-          {method === "PUT" && (
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-2">Request Body</h3>
-              <textarea
-                value={requestBody}
-                onChange={(e) => setRequestBody(e.target.value)}
-                placeholder='{"operationId": "ACC_Controller", "enabled_status": false}'
-                className="w-full h-32 p-2 border rounded font-mono text-sm"
-              />
-            </div>
-          )}
-
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Response</h3>
-            <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto max-h-96">
-              <pre className="whitespace-pre-wrap">
-                {response ? JSON.stringify(response, null, 2) : "No response yet"}
-              </pre>
-            </div>
           </div>
         </div>
       </div>

@@ -8,25 +8,24 @@ from typing import Optional, List
 import uvicorn
 
 app = FastAPI()
-FILE_PATH = "client.json"  # JSON data file
+FILE_PATH = "client.json"
 
-# Allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["https://server-client-trial.onrender.com", "https://server-client-trial-1.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load Data from JSON
+SERVER_BASE_URL = "https://server-client-trial.onrender.com"
+
 def load_data():
     if os.path.exists(FILE_PATH):
         with open(FILE_PATH, "r") as file:
             return json.load(file)
     return {"items": []}
 
-# Pydantic Models
 class Component(BaseModel):
     id: str
     name: str
@@ -45,8 +44,6 @@ class Update(BaseModel):
     operationId: str
     enabled_status: bool
 
-SERVER_BASE_URL = "https://server-client-trial-1.onrender.com"
-
 def fetch_components():
     response = requests.get(f"{SERVER_BASE_URL}/components")
     if response.status_code == 200:
@@ -61,11 +58,7 @@ def fetch_operations(component_id):
     if response.status_code == 200:
         print(f"\nEnabled/Disabled Status:")
         for update in response.json().get("items", []):
-            if update["enabled_status"]:
-                print(f"  - {update['operationId']} is enabled")
-                print(f" {update['enabled_status']}")
-            else:
-                print(f"  - {update['operationId']} is disabled")
+            print(f"  - {update['operationId']} is {'enabled' if update['enabled_status'] else 'disabled'}")
     else:
         print(f"\nFailed to fetch operations for {component_id}:", response.status_code, response.json())
 
@@ -77,13 +70,10 @@ def get_faults(component_id: str = Query(..., description="Component ID")):
     if not component or "faults" not in component:
         raise HTTPException(status_code=404, detail="Component or faults not found")
     
-    for item in component["faults"]:
-        print(f"  - ID: {item['display_code']}, Name: {item['fault_name']}, Severity: {item['severity']}")
     return {"items": component["faults"]}
 
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=10001)
     fetch_components()
     fetch_operations("engine")
     get_faults("engine")
